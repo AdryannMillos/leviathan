@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer");
-const Models = require("./src/models/index");
+const Models = require("../../../models/index");
 
-(async () => {
+async function execute() {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
   await page.goto("https://leviathancommander.wixsite.com/home/raports");
@@ -131,4 +131,5 @@ const Models = require("./src/models/index");
       await page.waitForTimeout(4000);
     }
   }
-})();
+  await browser.close();
+};

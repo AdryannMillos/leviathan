@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer");
-const Models = require("./src/models/index");
+const Models = require("../../../models/index");
 
-(async () => {
+async function execute() {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
   await page.goto("https://leviathancommander.wixsite.com/home/raports");
@@ -28,5 +28,11 @@ const Models = require("./src/models/index");
   const count = await Models.Championships.findAll();
   console.log(count.length);
   console.log(urls.length);
-  console.log(urls.length > count.length);
-})();
+  await browser.close();
+
+  return (urls.length > count.length);
+};
+
+module.exports = {
+  execute,
+}
