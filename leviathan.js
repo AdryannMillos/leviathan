@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-const Models = require("./models/index");
+const Models = require("./src/models/index");
 
 (async () => {
   const browser = await puppeteer.launch({ headless: false });
@@ -7,19 +7,29 @@ const Models = require("./models/index");
   await page.goto("https://leviathancommander.wixsite.com/home/raports");
 
   let commanders = [];
+  let count = 0;
 
   let urls = [];
-  while (await page.$("a.XN7yC")) {
+  while (await page.$("a.gwgQCb.IEV8qS")) {
     const pageUrls = await page.evaluate(() =>
       Array.from(
-        document.querySelectorAll("._0Z7nH"),
+        document.querySelectorAll("a.has-custom-focus"),
         (element) => element.href
       )
     );
     pageUrls.forEach((url) => urls.push(url));
     await page.waitForTimeout(4000);
-    await page.click("a.XN7yC");
+    await page.click("a.gwgQCb.IEV8qS");
   }
+  const pageUrls = await page.evaluate(() =>
+    Array.from(
+      document.querySelectorAll("a.has-custom-focus"),
+      (element) => element.href
+    )
+  );
+  pageUrls.forEach((url) => urls.push(url));
+
+  await page.waitForTimeout(4000);
   await newFunction();
   console.log(commanders);
   async function newFunction() {
@@ -33,7 +43,9 @@ const Models = require("./models/index");
       );
 
       let location = podium.find((item) => item.includes("City"));
-      location = location.replace("Country/City: ", "");
+      if (location) {
+        location = location.replace("Country/City: ", "");
+      }
 
       let date = podium.find((item) => item.includes("Data"));
       date = date.replace("Data:  ", "");
@@ -54,7 +66,7 @@ const Models = require("./models/index");
         remove_before = champion.includes("-")
           ? champion.indexOf("-")
           : champion.indexOf(")");
-        champion = champion.substring(remove_before + 2, champion.length - 2);
+        champion = champion.substring(remove_before + 2, champion.length - 1);
       }
 
       let second = podium.find(
@@ -70,7 +82,7 @@ const Models = require("./models/index");
         remove_before = second.includes("-")
           ? second.indexOf("-")
           : second.indexOf(")");
-        second = second.substring(remove_before + 2, second.length - 2);
+        second = second.substring(remove_before + 2, second.length - 1);
       }
 
       let third = podium.find(
@@ -86,7 +98,7 @@ const Models = require("./models/index");
         remove_before = third.includes("-")
           ? third.indexOf("-")
           : third.indexOf(")");
-        third = third.substring(remove_before + 2, third.length - 2);
+        third = third.substring(remove_before + 2, third.length - 1);
       }
 
       let fourth = podium.find(
@@ -102,15 +114,16 @@ const Models = require("./models/index");
         remove_before = fourth.includes("-")
           ? fourth.indexOf("-")
           : fourth.indexOf(")");
-        fourth = fourth.substring(remove_before + 2, fourth.length - 2);
+        fourth = fourth.substring(remove_before + 2, fourth.length - 1);
       }
 
       let championship = {
+        id: i,
         location: location,
         date: date,
         players: nbPlayers,
         champion: champion,
-        top4: champion + " -" + second + "- " + third + " -" + fourth,
+        top4: champion + " - " + second + " - " + third + " - " + fourth,
       };
 
       console.log(championship);

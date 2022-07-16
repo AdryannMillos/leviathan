@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Championships.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     location: DataTypes.STRING,
     date: DataTypes.STRING,
     players: DataTypes.STRING,
