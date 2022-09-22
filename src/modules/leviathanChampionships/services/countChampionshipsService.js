@@ -4,7 +4,7 @@ const Models = require("../../../models/index");
 async function execute() {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
-  await page.goto("https://leviathancommander.wixsite.com/home/raports");
+  await page.goto("https://leviathancommander.wixsite.com/home/reports");
 
   let urls = [];
   while (await page.$("a.gwgQCb.IEV8qS")) {

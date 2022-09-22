@@ -1,4 +1,5 @@
 const leviathanCompareService = require("../services/leviathanCompareService");
+const leviathanFilterService = require("../services/leviathanFilterService");
 
 async function compare(req, res) {
   try {
@@ -10,6 +11,16 @@ async function compare(req, res) {
   }
 }
 
+async function filter(req, res) {
+  try {
+    const filtered = await leviathanFilterService.execute(req.query);
+    return res.status(200).json(filtered);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 module.exports = {
-compare
+compare,
+filter
 };

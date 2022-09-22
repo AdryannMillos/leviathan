@@ -8,4 +8,9 @@ router.get(
     leviathanController.compare
   );
 
+  router.get(
+    "/list",
+    leviathanController.filter
+  );  
+
   module.exports = router;

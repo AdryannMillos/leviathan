@@ -4,8 +4,7 @@ module.exports = {
     await queryInterface.createTable('Championships', {
       id: {
         allowNull: false,
-        primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       location: {
         type: Sequelize.TEXT
