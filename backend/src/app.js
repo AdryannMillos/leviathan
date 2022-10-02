@@ -31,7 +31,7 @@ app.use(
     require("./modules/leviathanChampionships/routes/api.leviathan.route")
   );
 
-  schedule.scheduleJob("00 00 00 * * *", async () => {
+  schedule.scheduleJob("00 00 01 * * *", async () => {
     console.log("Running");
     console.log(new Date().getHours());
     await leviathanCompareService.execute();

@@ -30,7 +30,7 @@ async function execute(query){
         champion = champion.filter(item => item.location.toLowerCase().includes(location))
         top4 = top4.filter(item => item.location.toLowerCase().includes(location))
     }
-    return {champion, top4}
+    return {winner:champion, top4}
 }
 
 module.exports = {

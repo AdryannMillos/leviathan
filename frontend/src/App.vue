@@ -17,7 +17,7 @@
 
     <div class="row">
       <div class="col-12 col-md-9">
-        <Table />
+        <Table :tables=tables></Table>
       </div>
       <div class="col-6 col-md-3">
         <Table />
@@ -60,7 +60,7 @@ export default {
   },
   data(){
     return{
-      table: ''
+      tables: null
     }
   },
   created(){
@@ -69,7 +69,7 @@ export default {
   methods:{
     getAll(){
       list.getAll().then((response)=>{
-        console.log(response);
+        this.tables = response.data;
       })
     }
   }

@@ -1,43 +1,47 @@
 <template>
-  <table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table>
+    <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">location</th>
+              <th scope="col">date</th>
+              <th scope="col">players</th>
+              <th scope="col">champion</th>
+              <th scope="col">top4</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="table in localTables" :key="table.id">
+              <td>{{table.location}}</td>
+              <td>{{table.date}}</td>
+              <td>{{table.players}}</td>
+              <td>{{table.champion}}</td>
+              <td>{{table.top4}}</td>
+            </tr>
+          </tbody>
+        </table>
 </template>
 
 <script>
 export default {
-name: "TableComponent"
-}
+  name: "TableComponent",
+  props: {
+    tables: {
+      type: Object,
+    },
+  },
+  data() {
+    return {
+      localTables: null,
+    };
+  },
+  mounted() {
+    this.localTables = this.tables;
+  },
+};
 </script>
 
 <style>
-  table{
-    margin-top: 50px;
-  }
+table {
+  margin-top: 50px;
+}
 </style>
