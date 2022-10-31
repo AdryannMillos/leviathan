@@ -10,7 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       eventId: {
-        type: Sequelize.DataTypes.STRING,
+        type: Sequelize.DataTypes.INTEGER,
         references: {
           model: {
             tableName: 'events',
