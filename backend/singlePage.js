@@ -4,11 +4,13 @@ const Models = require("./src/models/index");
 async function execute() {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
-  await page.goto(
-    'https://leviathancommander.wixsite.com/home/post/torneio-semanal-de-commander-x1-levithan-element-4-aug-6-brazil-parnaiba')
-  await page.waitForTimeout(2000);
+  await page.goto("https://leviathancommander.wixsite.com/home/post/duel-commander-nn-mar-13-nizhny-novgorod-russia")
   await page.waitForSelector("p.mm8Nw");
-
+  await page.waitForSelector("h1.UbhFJ7");
+      
+  const title = await page.$$eval("h1.UbhFJ7 ", (elements) =>
+  elements.map((item) => item.textContent)
+);
   const podium = await page.$$eval("p.mm8Nw ", (elements) =>
     elements.map((item) => item.textContent)
   );
@@ -123,6 +125,7 @@ console.log(podium)
 
   let championship = {
     id: 0,
+    name: title[0],
     location: location,
     date: date,
     players: nbPlayers,

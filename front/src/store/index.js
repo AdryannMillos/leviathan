@@ -5,7 +5,8 @@ export default createStore({
     tables: null,
     tableWinner: null,
     tableTop4: null,
-    queryParams: null
+    queryParams: null,
+    commander: null,
   },
   getters: {},
   mutations: {
@@ -15,7 +16,10 @@ export default createStore({
     queryList(state, list) {
       state.tables = null;
       state.tableWinner = list.winner;
-      state.tableTop4 = list.top4
+      state.tableTop4 = list.top4;
+    },
+    setCommander(state, newValue) {
+      state.commander = newValue
     }
   },
   actions: {
@@ -26,9 +30,19 @@ export default createStore({
           commit("fullList", response.data);
         });
     },
-    queryList({ commit }) {
+    queryList({ commit }, params) {
+
+      const myUrlWithParams = new URL("http://localhost:3333/api/v1/leviathan/list");
+      if (params.commander)
+        myUrlWithParams.searchParams.append("commander", params.commander);
+
+      if (params.location)
+        myUrlWithParams.searchParams.append("location", params.location);
+
+      if (params.year) myUrlWithParams.searchParams.append("year", params.year);
+
       axios
-        .get("http://localhost:3333/api/v1/leviathan/list?date=2022&commander=ragavan")
+        .get(myUrlWithParams)
         .then((response) => {
           commit("queryList", response.data);
         });

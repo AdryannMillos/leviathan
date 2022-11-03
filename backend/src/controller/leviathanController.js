@@ -1,4 +1,4 @@
-const leviathanCompareService = require("../services/leviathanCompareService");
+const leviathanCompareService = require("../services/CompareEventUrlService");
 const leviathanFilterService = require("../services/leviathanFilterService");
 
 async function compare(req, res) {
