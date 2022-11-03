@@ -23,7 +23,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       decklist: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       position: {
         type: Sequelize.STRING
