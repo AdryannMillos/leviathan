@@ -1,16 +1,10 @@
-const Models = require("../models/index");
+const eventRepository = require("../repositories/eventRepository");
 const { QueryTypes } = require("sequelize");
 const sequelize = require("sequelize");
 
-async function execute(query) {
+async function execute(query, limit, skip) {
   if (Object.keys(query).length === 0) {
-    const list = await Models.Championships.findAll();
-
-    const listOfChampions = await Models.sequelize.query('SELECT champion, count(champion) as victorys FROM "Championships" c GROUP BY champion ORDER BY COUNT(champion) DESC LIMIT    4;', {
-      type: Models.sequelize.QueryTypes.SELECT
-    });
-    
-    return listOfChampions
+    return await eventRepository.noParamsQuery(limit, skip);   
   }
 
   const commander = query.commander ? query.commander.toLowerCase() : "";
