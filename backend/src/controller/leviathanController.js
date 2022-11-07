@@ -12,7 +12,6 @@ async function compare(req, res) {
 
 async function filter(req, res) {
   try {
-
     let { page, size } = req.query;
     if (!page) {
       page = 1;
@@ -24,22 +23,29 @@ async function filter(req, res) {
     const limit = parseInt(size);
     const skip = (page - 1) * size;
 
-    const filtered = await leviathanFilterService.execute(req.query ,limit, skip);
-    const numberOfPages = Math.ceil(filtered / size);
-    return res
-      .status(200)
-      .json({
+    const filtered = await leviathanFilterService.execute(
+      req.query,
+      limit,
+      skip
+    );
+    const numberOfPages = Math.ceil(filtered.paginated.total / size);
+    return res.status(200).json({
+      paginetdTable: {
         actualPage: page,
         size: size,
         numberOfPages: numberOfPages,
-        events: filtered,
-      });
+        events: filtered.paginated.eventsInPage,
+      },
+      mostPlayedDecks: filtered.mostPlayedDecks,
+      mostTop4Decks: filtered.mostTop4Decks,
+      mostWinnerDecks: filtered.mostWinnerDecks,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 }
 
 module.exports = {
-compare,
-filter
+  compare,
+  filter,
 };

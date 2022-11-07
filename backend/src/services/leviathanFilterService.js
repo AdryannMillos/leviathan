@@ -1,109 +1,24 @@
 const eventRepository = require("../repositories/eventRepository");
-const { QueryTypes } = require("sequelize");
-const sequelize = require("sequelize");
 
 async function execute(query, limit, skip) {
-  if (Object.keys(query).length === 0) {
-    return await eventRepository.noParamsQuery(limit, skip);   
-  }
+  const commander = query.commander
+    ? query.commander[0].toUpperCase() +
+      query.commander.substring(1).toLowerCase()
+    : null;
 
-  const commander = query.commander ? query.commander.toLowerCase() : "";
-  const date = query.date ? query.date : "";
-  const location = query.location ? query.location.toLowerCase() : "";
+  const date = query.date ? query.date : null;
 
-  //  function cutDate(item){return item.date.substring(item.date.length - 4, item.date.length)}
+  const location = query.location
+    ? query.location[0].toUpperCase() +
+      query.location.substring(1).toLowerCase()
+    : null;
 
-  let list;
-  let champion;
-  let top4
-  
-  if (commander) {
-    champion = await Models.Championships.findAll({
-      where: {
-        champion: sequelize.where(
-          sequelize.fn("LOWER", sequelize.col("champion")),
-          "LIKE",
-          "%" + commander + "%"
-        ),
-      },
-    });
-    top4 = await Models.Championships.findAll({
-      where: {
-        top4: sequelize.where(
-          sequelize.fn("LOWER", sequelize.col("top4")),
-          "LIKE",
-          "%" + commander + "%"
-        ),
-      },
-    });
+ const paginated = await eventRepository.getAllEventsPaginated(limit, skip);
+ const mostPlayedDecks = await eventRepository.getMostPlayedDecks(location, date);
+ const mostTop4Decks = await eventRepository.getMostTop4Decks(location, date);
+ const mostWinnerDecks = await eventRepository.getMostWinnerDecks(location, date);
 
-    top4 = top4.filter(
-      (item) => !item.champion.toLowerCase().includes(commander)
-    );
-
-    if (date) {
-      champion = champion.filter(
-        (item) =>
-          item.date.substring(item.date.length - 4, item.date.length) == date
-      );
-      top4 = top4.filter(
-        (item) =>
-          item.date.substring(item.date.length - 4, item.date.length) == date
-      );
-    }
-
-    if (location) {
-      champion = champion.filter((item) =>
-        item.location.toLowerCase().includes(location)
-      );
-      top4 = top4.filter((item) =>
-        item.location.toLowerCase().includes(location)
-      );
-    }
-  }
-
-  if (!commander && location && date) {
-    return (list = await Models.Championships.findAll({
-      where: {
-        date: sequelize.where(
-          sequelize.fn("LOWER", sequelize.col("date")),
-          "LIKE",
-          "%" + date + "%"
-        ),
-        location: sequelize.where(
-          sequelize.fn("LOWER", sequelize.col("location")),
-          "LIKE",
-          "%" + location + "%"
-        ),
-      },
-    }));
-  }
-
-  if (!commander && !date) {
-    return (list = await Models.Championships.findAll({
-      where: {
-        location: sequelize.where(
-          sequelize.fn("LOWER", sequelize.col("location")),
-          "LIKE",
-          "%" + location + "%"
-        ),
-      },
-    }));
-  }
-
-  if (!commander && !location) {
-    return (list = await Models.Championships.findAll({
-      where: {
-        date: sequelize.where(
-          sequelize.fn("LOWER", sequelize.col("date")),
-          "LIKE",
-          "%" + date + "%"
-        ),
-      },
-    }));
-  }
-
-  return { winner: champion, top4 };
+ return {paginated, mostPlayedDecks, mostTop4Decks, mostWinnerDecks}
 }
 
 module.exports = {
