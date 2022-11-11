@@ -30,7 +30,7 @@ async function filter(req, res) {
     );
     const numberOfPages = Math.ceil(filtered.paginated.total / size);
     return res.status(200).json({
-      paginetdTable: {
+      paginatedTable: {
         actualPage: page,
         size: size,
         numberOfPages: numberOfPages,

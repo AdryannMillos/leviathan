@@ -2,16 +2,27 @@ import { createStore } from "vuex";
 import axios from "axios";
 export default createStore({
   state: {
-    tables: null,
-    tableWinner: null,
-    tableTop4: null,
-    queryParams: null,
-    commander: null,
+    tables: [],
+    tableWinner: [],
+    tableTop4: [],
+    queryParams: [],
+    commander: [],
+    mostPlayedDecksFirst10: [],
+    mostWinnerDecksFirst10: [],
+    mostTop4DecksFirst10: [],
+    mostWinnerDecksWithoutFirst10: [],
+    mostTop4DecksWithoutFirst10: []
+
   },
   getters: {},
   mutations: {
     fullList(state, list) {
-      state.tables = list;
+      state.tables = list.paginatedTable.events;
+      state.mostPlayedDecksFirst10 = list.mostPlayedDecks.slice(0,10)
+      state.mostWinnerDecksFirst10 = list.mostWinnerDecks.slice(0,10)
+      state.mostTop4DecksFirst10 = list.mostTop4Decks.slice(0,10)
+      //adicionar outros
+      //retirar os 10 primeiros e lançar todos pros componentes e tratar lá
     },
     queryList(state, list) {
       state.tables = null;
