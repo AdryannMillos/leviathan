@@ -25,20 +25,23 @@
         </div>
         <div class="col-md-8">
           <input
-            v-model="year"
+            v-model="date"
             type="text"
-            name="year"
-            id="year"
+            name="date"
+            id="date"
             class="form-control"
-            placeholder="year"
+            placeholder="date"
           />
         </div>
       </div>
       <button>submit</button>
     </form>
     <div class="row">
-      <div class="col-12 col-md-9">
+      <div class="col-12 col-md-9" v-if="$store.state.isEvent">
         <EventTable :tables="$store.state.tables" />
+      </div>
+      <div class="col-12 col-md-9" v-else>
+        <DeckTable :tables="$store.state.tables" />
       </div>
       <div class="col-6 col-md-3">
         <FrequencyTable />
@@ -46,10 +49,10 @@
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <Chart :info="$store.state.mostWinnerDecksFirst10"/>
+        <Chart :info="$store.state.mostWinnerDecks" :top4="false"/>
       </div>
       <div class="col-12 col-md-6">
-        <Chart :info="$store.state.mostTop4DecksFirst10"/>
+        <Chart :info="$store.state.mostTop4Decks" :top4="true"/>
       </div>
     </div>
   </div>
@@ -58,6 +61,7 @@
 <script>
 import Navbar from "../components/Navbar.vue";
 import EventTable from "../components/EventTable.vue";
+import DeckTable from "../components/DeckTable.vue";
 import FrequencyTable from "../components/FrequencyTable.vue";
 import Chart from "../components/Chart.vue";
 
@@ -68,6 +72,7 @@ export default {
     EventTable,
     FrequencyTable,
     Chart,
+    DeckTable
   },
   computed: {
     hasParams() {
@@ -78,7 +83,7 @@ export default {
     return {
       commander: null,
       location: null,
-      year: null,
+      date: null,
     };
   },
  beforeCreate() {
@@ -106,7 +111,7 @@ export default {
       if (this.location)
         myUrlWithParams.searchParams.append("location", this.location);
 
-      if (this.year) myUrlWithParams.searchParams.append("year", this.year);
+      if (this.date) myUrlWithParams.searchParams.append("date", this.date);
 
       window.location.href = myUrlWithParams;
     },

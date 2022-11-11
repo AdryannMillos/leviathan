@@ -30,11 +30,12 @@ async function filter(req, res) {
     );
     const numberOfPages = Math.ceil(filtered.paginated.total / size);
     return res.status(200).json({
+      isEvent: req.query.commander ? false : true,
       paginatedTable: {
         actualPage: page,
         size: size,
         numberOfPages: numberOfPages,
-        events: filtered.paginated.eventsInPage,
+        events: filtered.paginated.inPage,
       },
       mostPlayedDecks: filtered.mostPlayedDecks,
       mostTop4Decks: filtered.mostTop4Decks,

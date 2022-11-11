@@ -4,7 +4,6 @@ async function execute(urlsArray, storedEvents){
     const filterRepeatedUrls = [...new Set(filterBadUrls)];
     const filterDatabaseUrls = filterRepeatedUrls.filter(item => !storedEvents.includes(item))
     
-    console.log(filterDatabaseUrls.length)
     return filterDatabaseUrls
 }
 

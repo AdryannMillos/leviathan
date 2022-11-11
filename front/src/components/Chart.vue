@@ -1,6 +1,6 @@
 <template>
   <div class="chart">
-    <h4>Vue Js Google Pie Chart Demo</h4>
+    <h4>{{ top4 == true ? "Top 10 decks at top 4" : "Top 10 most winner decks"}}</h4>
     <GChart type="PieChart" :options="options" :data="data" />
   </div>
 </template>
@@ -9,7 +9,7 @@
 import { GChart } from "vue-google-charts";
 export default {
   name: "App",
-  props: ["info"],
+  props: ["info", "top4"],
   components: {
     GChart,
   },
@@ -23,10 +23,18 @@ export default {
     };
   },
   updated() {
-    this.info.map((item) =>
+    let top10Decks = this.info
+    top10Decks = top10Decks.slice(0,10)
+
+    let otherDecks =this.info
+    otherDecks = otherDecks.slice(10,otherDecks.length)
+
+    let otherDecksOccurrence = otherDecks.reduce((prev, next) => prev += Number(next.occurrence), 0)
+
+    top10Decks.map((item) =>
       this.data.push([item.commander, Number(item.occurrence)])
     );
-    console.log(this.data);
+    this.data.push(["others", otherDecksOccurrence])
   },
 };
 </script>

@@ -12,7 +12,6 @@ async function execute(){
         
     if(newEvents === true){
         const filteredUrls = await filterUrlsService.execute(urlsArray, storedUrls);
-        console.log(true,filteredUrls)
         await runBotService.execute(filteredUrls);
     }
 }
