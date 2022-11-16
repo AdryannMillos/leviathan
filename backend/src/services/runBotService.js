@@ -2,12 +2,12 @@ const puppeteer = require("puppeteer");
 const Models = require("../models/index");
 
 async function execute(urlArray) {
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
   
   await newFunction();
   async function newFunction() {
-    for (let i = 0, total_urls = urlArray.length; i < total_urls; i++) {
+    for (let i = 0; i < urlArray.length; i++) {
       await page.goto(urlArray[i],{
         waitUntil: 'load',
         // Remove the timeout

@@ -4,35 +4,41 @@ const Op = Sequelize.Op;
 
 const findAll = async () => Models.Event.findAll();
 const getAllEventsPaginated = async (limit, skip, location, date) => {
-  let paginatedEvents;
   if (!location && !date) {
-    paginatedEvents = await Models.Event.findAll({
+    const { count, rows } = await Models.Event.findAndCountAll({
       include: ["decks"],
       limit: limit,
       offset: skip,
-      order: [["id", "ASC"]],
+      distinct: true,
+      order: [["id", "DESC"]],
     });
+
+    return { count, rows };
   }
   if (!location && date) {
-    paginatedEvents = await Models.Event.findAll({
+    const { count, rows } = await Models.Event.findAndCountAll({
       where: { date: { [Op.like]: `%${date}%` } },
       include: ["decks"],
       limit: limit,
       offset: skip,
-      order: [["id", "ASC"]],
+      distinct: true,
+      order: [["id", "DESC"]],
     });
+    return { count, rows };
   }
   if (location && !date) {
-    paginatedEvents = await Models.Event.findAll({
+    const { count, rows } = await Models.Event.findAndCountAll({
       where: { location: { [Op.like]: `%${location}%` } },
       include: ["decks"],
       limit: limit,
       offset: skip,
-      order: [["id", "ASC"]],
+      distinct: true,
+      order: [["id", "DESC"]],
     });
+    return { count, rows };
   }
   if (location && date) {
-    paginatedEvents = await Models.Event.findAll({
+    const { count, rows } = await Models.Event.findAndCountAll({
       where: {
         location: { [Op.like]: `%${location}%` },
         date: { [Op.like]: `%${date}%` },
@@ -40,13 +46,11 @@ const getAllEventsPaginated = async (limit, skip, location, date) => {
       include: ["decks"],
       limit: limit,
       offset: skip,
-      order: [["id", "ASC"]],
+      distinct: true,
+      order: [["id", "DESC"]],
     });
+    return { count, rows };
   }
-
-  const totalEvents = await Models.Event.count();
-
-  return { inPage: paginatedEvents, total: totalEvents };
 };
 const getCommanderPaginated = async (
   limit,
@@ -57,16 +61,18 @@ const getCommanderPaginated = async (
 ) => {
   let paginatedDecks;
   if (!location && !date) {
-    paginatedDecks = await Models.Deck.findAll({
+    const { count, rows } = await Models.Deck.findAndCountAll({
       where: { commander: { [Op.like]: `%${commander}%` } },
       include: ["event"],
       limit: limit,
       offset: skip,
-      order: [["id", "ASC"]],
+      distinct: true,
+      order: [["id", "DESC"]],
     });
+    return { count, rows };
   }
   if (!location && date) {
-    paginatedDecks = await Models.Deck.findAll({
+    const { count, rows } = await Models.Deck.findAndCountAll({
       where: {
         commander: { [Op.like]: `%${commander}%` },
         "$event.date$": { [Op.like]: `%${date}%` },
@@ -74,11 +80,13 @@ const getCommanderPaginated = async (
       include: ["event"],
       limit: limit,
       offset: skip,
-      order: [["id", "ASC"]],
+      distinct: true,
+      order: [["id", "DESC"]],
     });
+    return { count, rows };
   }
   if (location && !date) {
-    paginatedDecks = await Models.Deck.findAll({
+    const { count, rows } = await Models.Deck.findAndCountAll({
       where: {
         commander: { [Op.like]: `%${commander}%` },
         "$event.location$": { [Op.like]: `%${location}%` },
@@ -86,11 +94,13 @@ const getCommanderPaginated = async (
       include: ["event"],
       limit: limit,
       offset: skip,
-      order: [["id", "ASC"]],
+      distinct: true,
+      order: [["id", "DESC"]],
     });
+    return { count, rows };
   }
   if (location && date) {
-    paginatedDecks = await Models.Deck.findAll({
+    const { count, rows } = await Models.Deck.findAndCountAll({
       where: {
         commander: { [Op.like]: `%${commander}%` },
         "$event.date$": { [Op.like]: `%${date}%` },
@@ -99,13 +109,11 @@ const getCommanderPaginated = async (
       include: ["event"],
       limit: limit,
       offset: skip,
-      order: [["id", "ASC"]],
+      distinct: true,
+      order: [["id", "DESC"]],
     });
+    return { count, rows };
   }
-
-  const totalDecks = await Models.Deck.count();
-
-  return { inPage: paginatedDecks, total: totalDecks };
 };
 
 async function getMostWinnerDecks(location, date) {
