@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Navbar />
     <form @submit.prevent="filter">
       <div class="row">
         <div class="col-md-8">
@@ -59,7 +58,6 @@
 </template>
 
 <script>
-import Navbar from "../components/Navbar.vue";
 import EventTable from "../components/EventTable.vue";
 import DeckTable from "../components/DeckTable.vue";
 import FrequencyTable from "../components/FrequencyTable.vue";
@@ -68,7 +66,6 @@ import Chart from "../components/Chart.vue";
 export default {
   name: "HomeView",
   components: {
-    Navbar,
     EventTable,
     FrequencyTable,
     Chart,
@@ -104,7 +101,7 @@ export default {
   },
   methods: {
     filter() {
-      const myUrlWithParams = new URL("http://localhost:8080/");
+      const myUrlWithParams = new URL(process.env.VUE_APP_FRONT_URL);
       if (this.commander)
         myUrlWithParams.searchParams.append("commander", this.commander);
 

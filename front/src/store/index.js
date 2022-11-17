@@ -30,14 +30,14 @@ export default createStore({
   actions: {
     fullList({ commit }) {
       axios
-        .get("http://localhost:3333/api/v1/leviathan/list")
+        .get(process.env.VUE_APP_API_URL)
         .then((response) => {
           commit("fullList", response.data);
         });
     },
     queryList({ commit }, params) {
       const myUrlWithParams = new URL(
-        "http://localhost:3333/api/v1/leviathan/list"
+        process.env.VUE_APP_API_URL
       );
       if (params.commander) {
         myUrlWithParams.searchParams.append("commander", params.commander);
