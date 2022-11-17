@@ -95,8 +95,8 @@ export default {
         commander: urlParams.get("commander"),
         location: urlParams.get("location"),
         date: urlParams.get("date"),
+        page: urlParams.get("page"),
       };
-      
       this.$store.dispatch("queryList", params);
     } else {
       this.$store.dispatch("fullList");
