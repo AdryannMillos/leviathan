@@ -32,7 +32,7 @@ app.use(
   );
   console.log(new Date().getMinutes());
 
-  schedule.scheduleJob("00 54 * * * *", async () => {
+  schedule.scheduleJob("00 40 * * * *", async () => {
     console.log("Running");
     console.log(new Date().getHours());
     await CompareEventUrlService.execute();
