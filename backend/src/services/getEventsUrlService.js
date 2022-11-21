@@ -9,7 +9,7 @@ async function execute() {
 
   let urlsArray = [];
   await page.waitForTimeout(4000);
-  await page.click("a.gwgQCb.IEV8qS");
+  page.evaluate(() => document.querySelector("a.gwgQCb.IEV8qS")?.click());
 
   while (await page.$("a.gwgQCb.IEV8qS")) {
     const pageUrls = await page.evaluate(() =>
@@ -20,7 +20,7 @@ async function execute() {
     );
     pageUrls.forEach((url) => urlsArray.push(url));
     await page.waitForTimeout(4000);
-    await page.click("a.gwgQCb.IEV8qS");
+    page.evaluate(() => document.querySelector("a.gwgQCb.IEV8qS")?.click());
   }
   const pageUrls = await page.evaluate(() =>
     Array.from(
