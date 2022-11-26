@@ -1,7 +1,7 @@
 const bodyParser = require("body-parser");
 const schedule = require("node-schedule");
 const express = require("express");
-const leviathanCompareService = require("./modules/leviathanChampionships/services/leviathanCompareService");
+const CompareEventUrlService = require("../src/services/CompareEventUrlService");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,13 +28,14 @@ app.use(function (req, res, next) {
 
 app.use(
     "/api/v1/leviathan",
-    require("./modules/leviathanChampionships/routes/api.leviathan.route")
+    require("./routes/api.leviathan.route")
   );
+  console.log(new Date().getMinutes());
 
-  schedule.scheduleJob("00 00 01 * * *", async () => {
+  schedule.scheduleJob("00 40 * * * *", async () => {
     console.log("Running");
     console.log(new Date().getHours());
-    await leviathanCompareService.execute();
+    await CompareEventUrlService.execute();
   });
 
 module.exports = app;

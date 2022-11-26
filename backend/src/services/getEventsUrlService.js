@@ -1,12 +1,16 @@
 const puppeteer = require("puppeteer");
-const Models = require("../../../models/index");
 
 async function execute() {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
   const page = await browser.newPage();
   await page.goto("https://leviathancommander.wixsite.com/home/reports");
 
-  let urls = [];
+  let urlsArray = [];
+  await page.waitForTimeout(4000);
+  page.evaluate(() => document.querySelector("a.gwgQCb.IEV8qS")?.click());
+
   while (await page.$("a.gwgQCb.IEV8qS")) {
     const pageUrls = await page.evaluate(() =>
       Array.from(
@@ -14,9 +18,9 @@ async function execute() {
         (element) => element.href
       )
     );
-    pageUrls.forEach((url) => urls.push(url));
+    pageUrls.forEach((url) => urlsArray.push(url));
     await page.waitForTimeout(4000);
-    await page.click("a.gwgQCb.IEV8qS");
+    page.evaluate(() => document.querySelector("a.gwgQCb.IEV8qS")?.click());
   }
   const pageUrls = await page.evaluate(() =>
     Array.from(
@@ -24,15 +28,13 @@ async function execute() {
       (element) => element.href
     )
   );
-  pageUrls.forEach((url) => urls.push(url));
-  const count = await Models.Championships.findAll();
-  console.log(count.length);
-  console.log(urls.length);
-  await browser.close();
+  pageUrls.forEach((url) => urlsArray.push(url));
 
-  return (urls.length > count.length);
-};
+  await browser.close();
+  console.log(urlsArray.length);
+  return urlsArray;
+}
 
 module.exports = {
   execute,
-}
+};
