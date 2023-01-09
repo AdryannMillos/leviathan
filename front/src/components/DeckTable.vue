@@ -8,7 +8,6 @@
           <th scope="col">Event</th>
           <th scope="col">Date</th>
           <th scope="col">Players</th>
-          <th scope="col">Details</th>
         </tr>
       </thead>
       <tbody>
@@ -138,7 +137,6 @@ export default {
     goToPage(page) {
       const urlParams = new URL(window.location.href);
       urlParams.searchParams.set("page", page);
-      console.log(this.page);
       window.location.href = urlParams;
     },
   },
