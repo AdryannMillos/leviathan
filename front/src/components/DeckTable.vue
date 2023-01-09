@@ -13,7 +13,7 @@
       <tbody>
         <tr v-for="table in $store.state.tables" :key="table.id">
           <td>
-            <a :href="table.decklist">{{ table.commander }}</a>
+            <a target="_blank" :href="table.decklist">{{ table.commander }}</a>
           </td>
           <td>{{ table.position }}</td>
           <td>

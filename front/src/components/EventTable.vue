@@ -20,6 +20,7 @@
           <td>{{ table.numberOfPlayers }}</td>
           <td>
             <a
+              target="_blank"
               :href="
                 table.decks.find((item) => item.position == 1)
                   ? table.decks.find((item) => item.position == 1).decklist
