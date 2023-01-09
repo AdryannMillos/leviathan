@@ -7,7 +7,7 @@ export default createStore({
     mostWinnerDecks: [],
     mostTop4Decks: [],
     isEvent: true,
-    numberOfPages: 0
+    numberOfPages: 0,
   },
   getters: {},
   mutations: {
@@ -29,16 +29,12 @@ export default createStore({
   },
   actions: {
     fullList({ commit }) {
-      axios
-        .get(process.env.VUE_APP_API_URL)
-        .then((response) => {
-          commit("fullList", response.data);
-        });
+      axios.get(process.env.VUE_APP_API_URL).then((response) => {
+        commit("fullList", response.data);
+      });
     },
     queryList({ commit }, params) {
-      const myUrlWithParams = new URL(
-        process.env.VUE_APP_API_URL
-      );
+      const myUrlWithParams = new URL(process.env.VUE_APP_API_URL);
       if (params.commander) {
         myUrlWithParams.searchParams.append("commander", params.commander);
       }
@@ -52,6 +48,10 @@ export default createStore({
       }
       if (params.page) {
         myUrlWithParams.searchParams.append("page", params.page);
+      }
+      if (params.initialDate && params.finalDate) {
+        myUrlWithParams.searchParams.append("initialDate", params.initialDate);
+        myUrlWithParams.searchParams.append("finalDate", params.finalDate);
       }
 
       axios.get(myUrlWithParams).then((response) => {

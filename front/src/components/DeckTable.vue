@@ -25,7 +25,10 @@
         </tr>
       </tbody>
     </table>
-    <ul class="pagination justify-content-center" v-if="page == 1 || !page">
+    <ul
+      class="pagination justify-content-center"
+      v-if="(page == 1 || !page) && page != $store.state.numberOfPages"
+    >
       <li class="page-item">
         <button class="page-link" @click="goToPage(Number(1))">
           {{ Number(1) }}
@@ -43,11 +46,14 @@
       </li>
       <li class="page-item">
         <button class="page-link" @click="goToPage(Number(page) + 1)">
-          <span aria-hidden="true">&raquo;</span>
+          <span aria-hidden="true">&raquo; </span>
         </button>
       </li>
       <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(page) + 1)">
+        <button
+          class="page-link"
+          @click="goToPage(Number($store.state.numberOfPages))"
+        >
           {{ $store.state.numberOfPages }}
         </button>
       </li>
@@ -84,7 +90,7 @@
           <span aria-hidden="true">&raquo;</span>
         </button>
       </li>
-      <li class="page-item" v-if="!(page == ($store.state.numberOfPages-1))">
+      <li class="page-item">
         <button
           class="page-link"
           @click="goToPage(Number($store.state.numberOfPages))"
@@ -96,7 +102,7 @@
 
     <ul
       class="pagination justify-content-center"
-      v-if="page == $store.state.numberOfPages"
+      v-if="page == $store.state.numberOfPages && page != 1"
     >
       <li v-if="page != 2" class="page-item">
         <button class="page-link" @click="goToPage(1)">{{ 1 }}</button>
@@ -120,6 +126,14 @@
         <button class="page-link" @click="goToPage(Number(page))">
           {{ Number(page) }}
         </button>
+      </li>
+    </ul>
+    <ul
+      class="pagination justify-content-center"
+      v-if="page == $store.state.numberOfPages && page == 1"
+    >
+      <li v-if="page != 2" class="page-item">
+        <button class="page-link" @click="goToPage(1)">{{ 1 }}</button>
       </li>
     </ul>
   </div>
