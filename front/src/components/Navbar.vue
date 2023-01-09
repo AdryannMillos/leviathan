@@ -27,7 +27,7 @@
             <a
               class="nav-link text-white"
               target="_blank"
-              href="https://github.com/AdryannMillos/leviathan/tree/main"
+              href="https://github.com/AdryannMillos/automatic-librarian-api"
               >GitHub</a
             >
           </li>
