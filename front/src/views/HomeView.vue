@@ -27,7 +27,7 @@
           />
         </div>
         <div class="row centering mb-3 mt-3">
-          <div class="col-5 mb-3">
+          <div class="col-8 col-md-5 mb-3">
             <input
               v-model="byYear"
               class="form-check-input"
@@ -37,7 +37,7 @@
             />
             <label for="byYear" class="form-check-label ms-3">By Year</label>
           </div>
-          <div class="col-3 mb-3">
+          <div class="col-8 col-md-3 mb-3">
             <input
               v-model="setInterval"
               class="form-check-input"
