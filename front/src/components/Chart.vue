@@ -1,6 +1,8 @@
 <template>
-  <div class="chart">
-    <h4>{{ top4 == true ? "Top 10 decks at top 4" : "Top 10 most winner decks"}}</h4>
+  <div class="chart max-width: 100%">
+    <h4>
+      {{ top4 == true ? "Top 10 decks at top 4" : "Top 10 most winner decks" }}
+    </h4>
     <GChart type="PieChart" :options="options" :data="data" />
   </div>
 </template>
@@ -22,19 +24,28 @@ export default {
       },
     };
   },
+  created() {
+    let w = window.innerWidth;
+    let h = window.innerHeight;
+    this.options.width = w*0.4;
+    this.options.height = h*0.65;
+  },
   updated() {
-    let top10Decks = this.info
-    top10Decks = top10Decks.slice(0,10)
+    let top10Decks = this.info;
+    top10Decks = top10Decks.slice(0, 10);
 
-    let otherDecks =this.info
-    otherDecks = otherDecks.slice(10,otherDecks.length)
+    let otherDecks = this.info;
+    otherDecks = otherDecks.slice(10, otherDecks.length);
 
-    let otherDecksOccurrence = otherDecks.reduce((prev, next) => prev += Number(next.occurrence), 0)
+    let otherDecksOccurrence = otherDecks.reduce(
+      (prev, next) => (prev += Number(next.occurrence)),
+      0
+    );
 
     top10Decks.map((item) =>
       this.data.push([item.commander, Number(item.occurrence)])
     );
-    this.data.push(["others", otherDecksOccurrence])
+    this.data.push(["others", otherDecksOccurrence]);
   },
 };
 </script>
