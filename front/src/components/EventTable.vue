@@ -172,6 +172,6 @@ export default {
 
 <style>
 table {
-  margin-top: 50px;
+  margin: 12;
 }
 </style>

@@ -27,4 +27,10 @@ footer {
   background-color: purple;
   width: 100%;
 }
+@media (max-width: 425px) {
+  footer {
+    background-color: purple;
+    width: 160%;
+  }
+}
 </style>

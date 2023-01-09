@@ -196,10 +196,13 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin:0;
+  margin:12;
   max-width: 100%;
 }
 button {
   width: 100%;
+}
+.row{
+  max-width: 100%;
 }
 </style>

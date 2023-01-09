@@ -47,4 +47,10 @@ export default {
 .navbar {
   background-color: purple;
 }
+@media (max-width: 425px) {
+  .navbar {
+    background-color: purple;
+    width: 160%;
+  }
+}
 </style>
