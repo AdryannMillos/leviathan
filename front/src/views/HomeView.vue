@@ -1,7 +1,7 @@
 <template>
   <div>
     <form @submit.prevent="filter">
-      <div class="row mb-3 mt-3">
+      <div class="row centering mb-3 mt-3">
         <div class="col-7 mb-3">
           <label for="commander" class="form-label">Commander</label>
           <input
@@ -26,7 +26,7 @@
             placeholder="'Teresina' or 'Brazil'"
           />
         </div>
-        <div class="row mb-3 mt-3">
+        <div class="row centering mb-3 mt-3">
           <div class="col-4 mb-3">
             <input
               v-model="byYear"
@@ -50,7 +50,7 @@
             >
           </div>
         </div>
-        <div class="row mb-3 mt-3">
+        <div class="row centering mb-3 mt-3">
           <div v-if="byYear" class="col-7 mb-3">
             <select class="form-select" v-model='date' aria-label="Default select example">
               <option value="null">All years</option>
@@ -84,7 +84,7 @@
       </div>
     </form>
     <!-- Tables -->
-    <div class="row">
+    <div class="row centering">
       <div class="col-11" v-if="$store.state.isEvent">
         <EventTable :tables="$store.state.tables" />
       </div>
@@ -98,11 +98,11 @@
     <!-- Charts -->
     <br />
     <br />
-    <div class="row mt-6">
-      <div class="col-10 col-md-6">
+    <div class="row centering mt-6">
+      <div class="col-10 col-xl-6">
         <Chart :info="$store.state.mostWinnerDecks" :top4="false" />
       </div>
-      <div class="col-10 col-md-3">
+      <div class="col-10 col-xl-6">
         <Chart :info="$store.state.mostTop4Decks" :top4="true" />
       </div>
     </div>
@@ -191,11 +191,13 @@ export default {
 </script>
 
 <style>
-.row {
+.centering {
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin:0;
+  max-width: 100%;
 }
 button {
   width: 100%;

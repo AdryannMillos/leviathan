@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="box">
     <Navbar></Navbar>
     <router-view />
     <Footer></Footer>
@@ -10,21 +10,15 @@ import Navbar from "./components/Navbar.vue";
 import Footer from "./components/Footer.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Navbar,
-    Footer
+    Footer,
   },
 };
 </script>
 <style>
-html,
 body {
-  height: 100%;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
 }
-
-#page-content {
-  flex: 1 0 auto;
-}
-
 </style>
