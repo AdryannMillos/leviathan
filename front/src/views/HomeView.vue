@@ -52,11 +52,11 @@
         </div>
         <div class="row mb-3 mt-3">
           <div v-if="byYear" class="col-7 mb-3">
-            <select class="form-select" aria-label="Default select example">
-              <option selected>Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <select class="form-select" v-model='date' aria-label="Default select example">
+              <option value="null">All years</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
             </select>
           </div>
           <div v-if="setInterval" class="col-3 mb-3">
@@ -180,7 +180,6 @@ export default {
 
       if (this.date) myUrlWithParams.searchParams.append("date", this.date);
 
-      if (this.date) myUrlWithParams.searchParams.append("date", this.date);
       if (this.initialDate && this.finalDate) {
         myUrlWithParams.searchParams.append("initialDate", this.initialDate);
         myUrlWithParams.searchParams.append("finalDate", this.finalDate);
