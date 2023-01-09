@@ -27,8 +27,8 @@ export default {
   created() {
     let w = window.innerWidth;
     let h = window.innerHeight;
-    this.options.width = w*0.4;
-    this.options.height = h*0.65;
+    this.options.width = w;
+    this.options.height = h;
   },
   updated() {
     let top10Decks = this.info;
