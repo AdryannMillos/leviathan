@@ -28,8 +28,8 @@ export default {
     let w = window.innerWidth;
     let h = window.innerHeight;
     if (w < 992) {
-      this.options.width = w;
-      this.options.height = h;
+      this.options.width = w*0.8;
+      this.options.height = h*0.8;
     } else {
       this.options.width = w * 0.5;
       this.options.height = h * 0.5;
