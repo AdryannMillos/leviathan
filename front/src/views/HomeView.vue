@@ -99,10 +99,10 @@
     <br />
     <br />
     <div class="row centering mt-6">
-      <div class="col-10 col-xl-6">
+      <div class="col-10 col-xl-5">
         <Chart :info="$store.state.mostWinnerDecks" :top4="false" />
       </div>
-      <div class="col-10 col-xl-6">
+      <div class="col-10 col-xl-5">
         <Chart :info="$store.state.mostTop4Decks" :top4="true" />
       </div>
     </div>
