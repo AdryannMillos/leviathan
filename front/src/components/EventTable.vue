@@ -151,7 +151,6 @@ export default {
     goToPage(page) {
       const urlParams = new URL(window.location.href);
       urlParams.searchParams.set("page", page);
-      console.log(this.page);
       window.location.href = urlParams;
     },
   },
