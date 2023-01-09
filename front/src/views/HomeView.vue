@@ -2,7 +2,7 @@
   <div>
     <form @submit.prevent="filter">
       <div class="row centering mb-3 mt-3">
-        <div class="col-7 mb-3">
+        <div class="col-8 mb-3">
           <label for="commander" class="form-label">Commander</label>
           <input
             label="Commander"
@@ -15,7 +15,7 @@
             aria-label="'Esika, God of the tree'"
           />
         </div>
-        <div class="col-7 mb-3">
+        <div class="col-8 mb-3">
           <label for="location" class="form-label">Location</label>
           <input
             v-model="location"
@@ -27,7 +27,7 @@
           />
         </div>
         <div class="row centering mb-3 mt-3">
-          <div class="col-4 mb-3">
+          <div class="col-5 mb-3">
             <input
               v-model="byYear"
               class="form-check-input"
@@ -51,7 +51,7 @@
           </div>
         </div>
         <div class="row centering mb-3 mt-3">
-          <div v-if="byYear" class="col-7 mb-3">
+          <div v-if="byYear" class="col-8 mb-3">
             <select class="form-select" v-model='date' aria-label="Default select example">
               <option value="null">All years</option>
               <option value="2023">2023</option>
@@ -59,7 +59,7 @@
               <option value="2021">2021</option>
             </select>
           </div>
-          <div v-if="setInterval" class="col-3 mb-3">
+          <div v-if="setInterval" class="col-4 mb-3">
             <input
               v-model="initialDate"
               type="date"
@@ -68,7 +68,7 @@
               class="form-control"
             />
           </div>
-          <div v-if="setInterval" class="col-3 mb-3">
+          <div v-if="setInterval" class="col-4 mb-3">
             <input
               v-model="finalDate"
               type="date"
@@ -78,7 +78,7 @@
             />
           </div>
         </div>
-        <div class="col-7">
+        <div class="col-6">
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>
       </div>
