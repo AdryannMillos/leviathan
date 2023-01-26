@@ -60,6 +60,7 @@
             </select>
           </div>
           <div v-if="setInterval" class="col-4 mb-3">
+            <label for="initialDate" class="form-check-label ms-3">Initial</label>
             <input
               v-model="initialDate"
               type="date"
@@ -69,6 +70,8 @@
             />
           </div>
           <div v-if="setInterval" class="col-4 mb-3">
+            <label for="initialDate" class="form-check-label ms-3">Final</label>
+
             <input
               v-model="finalDate"
               type="date"
