@@ -1,30 +1,34 @@
 <template>
   <div>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">Commander</th>
-          <th scope="col">Position</th>
-          <th scope="col">Event</th>
-          <th scope="col">Date</th>
-          <th scope="col">Players</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="table in $store.state.tables" :key="table.id">
-          <td>
-            <a target="_blank" :href="table.decklist">{{ table.commander }}</a>
-          </td>
-          <td>{{ table.position }}</td>
-          <td>
-            <a :href="table.event.url">{{ table.event.name }}</a>
-          </td>
-          <td>{{ table.event.date }}</td>
-          <td>{{ table.event.numberOfPlayers }}</td>
-          <td>+</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Commander</th>
+            <th scope="col">Position</th>
+            <th scope="col">Event</th>
+            <th scope="col">Date</th>
+            <th scope="col">Players</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="table in $store.state.tables" :key="table.id">
+            <td>
+              <a target="_blank" :href="table.decklist">{{
+                table.commander
+              }}</a>
+            </td>
+            <td>{{ table.position }}</td>
+            <td>
+              <a :href="table.event.url">{{ table.event.name }}</a>
+            </td>
+            <td>{{ table.event.date }}</td>
+            <td>{{ table.event.numberOfPlayers }}</td>
+            <td>+</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <ul
       class="pagination justify-content-center"
       v-if="(page == 1 || !page) && page != $store.state.numberOfPages"
@@ -158,7 +162,4 @@ export default {
 </script>
 
 <style>
-table {
-  margin-top: 50px;
-}
 </style>

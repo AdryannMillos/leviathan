@@ -1,42 +1,44 @@
 <template>
   <div>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">Event</th>
-          <th scope="col">Location</th>
-          <th scope="col">Date</th>
-          <th scope="col">Players</th>
-          <th scope="col">Champion</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="table in tables" :key="table.id">
-          <td>
-            <a :href="table.url">{{ table.name }}</a>
-          </td>
-          <td>{{ table.location }}</td>
-          <td>{{ table.date }}</td>
-          <td>{{ table.numberOfPlayers }}</td>
-          <td>
-            <a
-              target="_blank"
-              :href="
-                table.decks.find((item) => item.position == 1)
-                  ? table.decks.find((item) => item.position == 1).decklist
-                  : null
-              "
-              >{{
-                table.decks.find((item) => item.position == 1)
-                  ? table.decks.find((item) => item.position == 1).commander
-                  : null
-              }}</a
-            >
-          </td>
-        </tr>
-      </tbody>
-      <tfoot></tfoot>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Event</th>
+            <th scope="col">Location</th>
+            <th scope="col">Date</th>
+            <th scope="col">Players</th>
+            <th scope="col">Champion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="table in tables" :key="table.id">
+            <td>
+              <a target="_blank" :href="table.url">{{ table.name }}</a>
+            </td>
+            <td>{{ table.location }}</td>
+            <td>{{ table.date }}</td>
+            <td>{{ table.numberOfPlayers }}</td>
+            <td>
+              <a
+                target="_blank"
+                :href="
+                  table.decks.find((item) => item.position == 1)
+                    ? table.decks.find((item) => item.position == 1).decklist
+                    : null
+                "
+                >{{
+                  table.decks.find((item) => item.position == 1)
+                    ? table.decks.find((item) => item.position == 1).commander
+                    : null
+                }}</a
+              >
+            </td>
+          </tr>
+        </tbody>
+        <tfoot></tfoot>
+      </table>
+    </div>
     <ul
       class="pagination justify-content-center"
       v-if="(page == 1 || !page) && page !== $store.state.numberOfPages"
@@ -170,8 +172,4 @@ export default {
 };
 </script>
 
-<style>
-table {
-  margin: 12;
-}
-</style>
+<style></style>
