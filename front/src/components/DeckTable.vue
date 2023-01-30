@@ -24,7 +24,6 @@
             </td>
             <td>{{ table.event.date }}</td>
             <td>{{ table.event.numberOfPlayers }}</td>
-            <td>+</td>
           </tr>
         </tbody>
       </table>
