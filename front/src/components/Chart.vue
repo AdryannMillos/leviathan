@@ -36,20 +36,25 @@ export default {
     }
   },
   updated() {
-    let top10Decks = this.info;
-    top10Decks = top10Decks.slice(0, 10);
+    let top10Decks = this.info
+    // top10Decks = top10Decks.slice(0, 10);
 
-    let otherDecks = this.info;
-    otherDecks = otherDecks.slice(10, otherDecks.length);
+    // let otherDecks = this.info;
+    // otherDecks = otherDecks.slice(10, otherDecks.length);
 
-    let otherDecksOccurrence = otherDecks.reduce(
+    // let otherDecksOccurrence = otherDecks.reduce(
+    //   (prev, next) => (prev += Number(next.occurrence)),
+    //   0
+    // );
+    top10Decks.map((item) =>
+      this.data.push([item.commander, Number(item.occurrence)])
+    );
+    let top10DecksOccurrence = top10Decks.reduce(
       (prev, next) => (prev += Number(next.occurrence)),
       0
     );
 
-    top10Decks.map((item) =>
-      this.data.push([item.commander, Number(item.occurrence)])
-    );
+    const otherDecksOccurrence = this.top4 ? this.$store.state.top4.total - top10DecksOccurrence : this.$store.state.winners.total - top10DecksOccurrence
     this.data.push(["others", otherDecksOccurrence]);
   },
 };

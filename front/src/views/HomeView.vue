@@ -88,11 +88,11 @@
     </form>
     <!-- Tables -->
     <div class="row centering">
-      <div class="col-11" v-if="$store.state.isEvent">
-        <EventTable :tables="$store.state.tables" />
+      <div class="col-11" v-if="$store.state.events?.events?.length > 1">
+        <EventTable />
       </div>
       <div class="col-11" v-else>
-        <DeckTable :tables="$store.state.tables" />
+        <DeckTable />
       </div>
       <div class="col-6">
         <FrequencyTable />
@@ -103,10 +103,10 @@
     <br />
     <div class="row centering mt-6">
       <div class="col-10 col-xl-5">
-        <Chart :info="$store.state.mostWinnerDecks" :top4="false" />
+        <Chart :info="$store.state.winners.winners" :top4="false" />
       </div>
       <div class="col-10 col-xl-5">
-        <Chart :info="$store.state.mostTop4Decks" :top4="true" />
+        <Chart :info="$store.state.top4.top4" :top4="true" />
       </div>
     </div>
   </div>

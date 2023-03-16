@@ -12,7 +12,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="table in $store.state.tables" :key="table.id">
+          <tr
+            v-for="table in $store.state.commanders?.commanders"
+            :key="table.id"
+          >
             <td>
               <a target="_blank" :href="table.decklist">{{
                 table.commander
@@ -28,117 +31,34 @@
         </tbody>
       </table>
     </div>
-    <ul
-      class="pagination justify-content-center"
-      v-if="(page == 1 || !page) && page != $store.state.numberOfPages"
-    >
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(1))">
-          {{ Number(1) }}
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(1) + 1)">
-          {{ Number(1) + 1 }}
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(3))">
-          {{ Number(3) }}
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(page) + 1)">
-          <span aria-hidden="true">&raquo; </span>
-        </button>
-      </li>
-      <li class="page-item">
-        <button
-          class="page-link"
-          @click="goToPage(Number($store.state.numberOfPages))"
-        >
-          {{ $store.state.numberOfPages }}
-        </button>
-      </li>
-    </ul>
-    <ul
-      class="pagination justify-content-center"
-      v-if="page && page != 1 && page != $store.state.numberOfPages"
-    >
-      <li v-if="page != 2" class="page-item">
-        <button class="page-link" @click="goToPage(1)">{{ 1 }}</button>
-      </li>
-      <li v-if="page != 2" class="page-item">
-        <button class="page-link" @click="goToPage(Number(page) - 1)">
-          <span aria-hidden="true">&laquo;</span>
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(page) - 1)">
-          {{ Number(page) - 1 }}
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(page))">
-          {{ Number(page) }}
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(page) + 1)">
-          {{ Number(page) + 1 }}
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(page) + 1)">
-          <span aria-hidden="true">&raquo;</span>
-        </button>
-      </li>
-      <li class="page-item">
-        <button
-          class="page-link"
-          @click="goToPage(Number($store.state.numberOfPages))"
-        >
-          {{ $store.state.numberOfPages }}
-        </button>
-      </li>
-    </ul>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li v-if="page > 1" class="page-item">
+          <a
+            class="page-link"
+            href="#"
+            aria-label="Previous"
+            @click="goToPage(Number(page) - 1)"
+          >
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li v-for="page in pageOptions" :key="page" class="page-item">
+          <a class="page-link" href="#" @click="goToPage(page)">{{ page }}</a>
+        </li>
 
-    <ul
-      class="pagination justify-content-center"
-      v-if="page == $store.state.numberOfPages && page != 1"
-    >
-      <li v-if="page != 2" class="page-item">
-        <button class="page-link" @click="goToPage(1)">{{ 1 }}</button>
-      </li>
-      <li v-if="page != 2" class="page-item">
-        <button class="page-link" @click="goToPage(Number(page) - 1)">
-          <span aria-hidden="true">&laquo;</span>
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(page) - 2)">
-          {{ Number(page) - 2 }}
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(page) - 1)">
-          {{ Number(page) - 1 }}
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(page))">
-          {{ Number(page) }}
-        </button>
-      </li>
-    </ul>
-    <ul
-      class="pagination justify-content-center"
-      v-if="page == $store.state.numberOfPages && page == 1"
-    >
-      <li v-if="page != 2" class="page-item">
-        <button class="page-link" @click="goToPage(1)">{{ 1 }}</button>
-      </li>
-    </ul>
+        <li v-if="page < $store.state.commanders.numberOfPages" class="page-item">
+          <a
+            class="page-link"
+            href="#"
+            aria-label="Next"
+            @click="goToPage(Number(page) + 1)"
+          >
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
@@ -157,8 +77,40 @@ export default {
       window.location.href = urlParams;
     },
   },
+  computed: {
+    pageOptions() {
+      const options = [];
+
+      if (this.$store.state.commanders.numberOfPages <= 5) {
+        for (let i = 1; i <= this.$store.state.commanders.numberOfPages; i++) {
+          options.push(i);
+        }
+      } else if (this.page <= 3) {
+        for (let i = 1; i <= 5; i++) {
+          options.push(i);
+        }
+      } else if (this.page >= this.$store.state.commanders.numberOfPages - 2) {
+        for (
+          let i = this.$store.state.commanders.numberOfPages - 4;
+          i <= this.$store.state.commanders.numberOfPages;
+          i++
+        ) {
+          options.push(i);
+        }
+      } else {
+        for (
+          let i = this.page - 2;
+          i <= this.page + 2 && options.length < 5;
+          i++
+        ) {
+          options.push(i);
+        }
+      }
+
+      return options;
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -7,7 +7,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="table in $store.state.mostPlayedDecksFirst10" :key="table.id">
+      <tr v-for="table in $store.state.played.played" :key="table.id">
         <td>{{ table.commander }}</td>
         <td>{{ table.occurrence }}</td>
       </tr>

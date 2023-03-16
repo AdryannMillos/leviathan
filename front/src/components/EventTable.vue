@@ -12,7 +12,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="table in tables" :key="table.id">
+          <tr v-for="table in $store.state.events.events" :key="table.id">
             <td>
               <a target="_blank" :href="table.url">{{ table.name }}</a>
             </td>
@@ -39,11 +39,38 @@
         <tfoot></tfoot>
       </table>
     </div>
-    <ul
-      class="pagination justify-content-center"
-      v-if="(page == 1 || !page) && page !== $store.state.numberOfPages"
-    >
-      <li class="page-item">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li v-if="page > 1" class="page-item">
+          <a class="page-link" href="#" aria-label="Previous" @click="goToPage(Number(page)-1)">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li v-for="page in pageOptions" :key="page" class="page-item">
+          <a class="page-link" href="#" @click="goToPage(page)">{{ page }}</a>
+        </li>
+
+        <li v-if="page < $store.state.events.numberOfPages" class="page-item">
+          <a class="page-link" href="#" aria-label="Next" @click="goToPage(Number(page)+1)">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <!-- <ul class="pagination justify-content-center">
+      <li v-if="page > 1" @click="goToPage(page - 1)"><a>&laquo;</a></li>
+      <li
+        v-for="page in $store.state.events.numberOfPages"
+        :key="page"
+        :class="{ active: page === page }"
+        @click="goToPage(page)"
+      >
+        <a>{{ page }}</a>
+      </li>
+      <li v-if="page < $store.state.events.numberOfPages" @click="goToPage(page + 1)">
+        <a>&raquo;</a>
+      </li> -->
+    <!-- <li class="page-item">
         <button class="page-link" @click="goToPage(Number(1))">
           {{ Number(1) }}
         </button>
@@ -70,78 +97,8 @@
         >
           {{ $store.state.numberOfPages }}
         </button>
-      </li>
-    </ul>
-    <ul
-      class="pagination justify-content-center"
-      v-if="page && page != 1 && page != $store.state.numberOfPages"
-    >
-      <li v-if="page != 2" class="page-item">
-        <button class="page-link" @click="goToPage(1)">{{ 1 }}</button>
-      </li>
-      <li v-if="page != 2" class="page-item">
-        <button class="page-link" @click="goToPage(Number(page) - 1)">
-          <span aria-hidden="true">&laquo;</span>
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(page) - 1)">
-          {{ Number(page) - 1 }}
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(page))">
-          {{ Number(page) }}
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(page) + 1)">
-          {{ Number(page) + 1 }}
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(page) + 1)">
-          <span aria-hidden="true">&raquo;</span>
-        </button>
-      </li>
-      <li class="page-item">
-        <button
-          class="page-link"
-          @click="goToPage(Number($store.state.numberOfPages))"
-        >
-          {{ $store.state.numberOfPages }}
-        </button>
-      </li>
-    </ul>
-
-    <ul
-      class="pagination justify-content-center"
-      v-if="page == $store.state.numberOfPages"
-    >
-      <li v-if="page != 2" class="page-item">
-        <button class="page-link" @click="goToPage(1)">{{ 1 }}</button>
-      </li>
-      <li v-if="page != 2" class="page-item">
-        <button class="page-link" @click="goToPage(Number(page) - 1)">
-          <span aria-hidden="true">&laquo;</span>
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(page) - 2)">
-          {{ Number(page) - 2 }}
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(page) - 1)">
-          {{ Number(page) - 1 }}
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" @click="goToPage(Number(page))">
-          {{ Number(page) }}
-        </button>
-      </li>
-    </ul>
+      </li> -->
+    <!-- </ul> -->
   </div>
 </template>
 
@@ -150,18 +107,12 @@ export default {
   name: "EventTableComponent",
   data() {
     return {
-      tables: [],
-      decks: [],
       page: new URLSearchParams(window.location.search).get("page"),
     };
   },
-  updated() {
-    this.tables = this.$store.state.tables;
-    this.decks = this.tables.map((item) => item.decks);
-    this.decks = this.decks.map((item) =>
-      item.find((list) => list.position == 1)
-    );
-  },
+  // mounted() {
+  //   this.tables = [...this.$store.state.events];
+  // },
   methods: {
     goToPage(page) {
       const urlParams = new URL(window.location.href);
@@ -169,7 +120,65 @@ export default {
       window.location.href = urlParams;
     },
   },
+
+  computed: {
+    pageOptions() {
+      const options = [];
+
+      if (this.$store.state.events.numberOfPages <= 5) {
+        for (let i = 1; i <= this.$store.state.events.numberOfPages; i++) {
+          options.push(i);
+        }
+      } else if (this.page <= 3) {
+        for (let i = 1; i <= 5; i++) {
+          options.push(i);
+        }
+      } else if (this.page >= this.$store.state.events.numberOfPages - 2) {
+        for (
+          let i = this.$store.state.events.numberOfPages - 4;
+          i <= this.$store.state.events.numberOfPages;
+          i++
+        ) {
+          options.push(i);
+        }
+      } else {
+        for (
+          let i = this.page - 2;
+          i <= this.page + 2 && options.length < 5;
+          i++
+        ) {
+          options.push(i);
+        }
+      }
+
+      return options;
+    },
+  },
 };
 </script>
 
-<style></style>
+<style>
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination li {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.pagination li a {
+  display: block;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.pagination li.active a {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+</style>
