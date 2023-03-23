@@ -177,7 +177,7 @@ export default {
   },
   methods: {
     filter() {
-      const myUrlWithParams = new URL(process.env.VUE_APP_FRONT_URL);
+      const myUrlWithParams = new URL(window.location.href.split("?")[0]);
       if (this.commander)
         myUrlWithParams.searchParams.append("commander", this.commander);
 
