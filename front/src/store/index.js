@@ -99,6 +99,15 @@ export default createStore({
       if (params.page) {
         eventUrl.searchParams.append("page", params.page);
         commanderUrl.searchParams.append("page", params.page);
+        if(window.location.href.includes("frequency")){
+          playedUrl.searchParams.append("page", params.page);
+        }
+        if(window.location.href.includes("winner")){
+          winnerUrl.searchParams.append("page", params.page);
+        }
+        if(window.location.href.includes("top4")){
+          top4Url.searchParams.append("page", params.page);
+        }
       }
       if (params.initialDate && params.finalDate) {
         eventUrl.searchParams.append("initialDate", params.initialDate);

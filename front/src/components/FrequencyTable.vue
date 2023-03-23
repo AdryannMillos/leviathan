@@ -7,7 +7,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="table in $store.state.played.played" :key="table.id">
+      <tr v-for=" table in !info ? $store.state.played.played : info" :key="table.id">
         <td>{{ table.commander }}</td>
         <td>{{ table.occurrence }}</td>
       </tr>
@@ -19,6 +19,7 @@
 
 export default {
   name: "FrequencyTableComponent",
+  props: ["info"],
 };
 </script>
 

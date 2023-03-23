@@ -3,19 +3,6 @@
     <form @submit.prevent="filter">
       <div class="row centering mb-3 mt-3">
         <div class="col-8 mb-3">
-          <label for="commander" class="form-label">Commander</label>
-          <input
-            label="Commander"
-            v-model="commander"
-            type="text"
-            name="commander"
-            id="commander"
-            class="form-control"
-            placeholder="'Esika, God of the tree'"
-            aria-label="'Esika, God of the tree'"
-          />
-        </div>
-        <div class="col-8 mb-3">
           <label for="location" class="form-label">Location</label>
           <input
             v-model="location"
@@ -52,7 +39,11 @@
         </div>
         <div class="row centering mb-3 mt-3">
           <div v-if="byYear" class="col-8 mb-3">
-            <select class="form-select" v-model='date' aria-label="Default select example">
+            <select
+              class="form-select"
+              v-model="date"
+              aria-label="Default select example"
+            >
               <option value="null">All years</option>
               <option value="2023">2023</option>
               <option value="2022">2022</option>
@@ -60,7 +51,9 @@
             </select>
           </div>
           <div v-if="setInterval" class="col-4 mb-3">
-            <label for="initialDate" class="form-check-label ms-3">Initial</label>
+            <label for="initialDate" class="form-check-label ms-3"
+              >Initial</label
+            >
             <input
               v-model="initialDate"
               type="date"
@@ -88,51 +81,54 @@
     </form>
     <!-- Tables -->
     <div class="row centering">
-      <div class="col-11" v-if="$store.state.events?.events?.length > 1">
-        <EventTable />
-      </div>
-      <div class="col-11" v-else>
-        <DeckTable />
-      </div>
-      <div class="col-6">
-        <FrequencyTable />
-        <router-link to="/frequency" >View More</router-link>
+      <div class="col-11">
+        <FrequencyTable :info="$store?.state?.top4?.top4"/>
       </div>
     </div>
-    <!-- Charts -->
-    <br />
-    <br />
-    <div class="row centering mt-6">
-      <div class="col-10 col-xl-5">
-        <Chart :info="$store.state.winners.winners" :top4="false" />
-        <router-link to="/winner" >View More</router-link>
-      </div>
-      <div class="col-10 col-xl-5">
-        <Chart :info="$store.state.top4.top4" :top4="true" />
-        <router-link to="/top4" >View More</router-link>
-      </div>
-    </div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li v-if="page > 1" class="page-item">
+          <a
+            class="page-link"
+            href="#"
+            aria-label="Previous"
+            @click="goToPage(Number(page) - 1)"
+          >
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li v-for="page in pageOptions" :key="page" class="page-item">
+          <a class="page-link" href="#" @click="goToPage(page)">{{ page }}</a>
+        </li>
+
+        <li v-if="page < $store.state.top4.numberOfPages" class="page-item">
+          <a
+            class="page-link"
+            href="#"
+            aria-label="Next"
+            @click="goToPage(Number(page) + 1)"
+          >
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
 <script>
-import EventTable from "../components/EventTable.vue";
-import DeckTable from "../components/DeckTable.vue";
+//   import EventTable from "../components/EventTable.vue";
+//   import DeckTable from "../components/DeckTable.vue";
 import FrequencyTable from "../components/FrequencyTable.vue";
-import Chart from "../components/Chart.vue";
+//   import Chart from "../components/Chart.vue";
 
 export default {
-  name: "HomeView",
+  name: "Top4View",
   components: {
-    EventTable,
+    //   EventTable,
     FrequencyTable,
-    Chart,
-    DeckTable,
-  },
-  computed: {
-    hasParams() {
-      return window.location.href.indexOf("?") !== -1;
-    },
+    //   Chart,
+    //   DeckTable,
   },
   watch: {
     byYear: function (newVal) {
@@ -148,13 +144,13 @@ export default {
   },
   data() {
     return {
-      commander: null,
       location: null,
       date: null,
       byYear: true,
       setInterval: false,
       initialDate: null,
       finalDate: null,
+      page: new URLSearchParams(window.location.search).get("page"),
     };
   },
   beforeCreate() {
@@ -163,7 +159,6 @@ export default {
       const urlParams = new URLSearchParams(window.location.search);
 
       const params = {
-        commander: urlParams.get("commander"),
         location: urlParams.get("location"),
         date: urlParams.get("date"),
         page: urlParams.get("page"),
@@ -176,10 +171,13 @@ export default {
     }
   },
   methods: {
+    goToPage(page) {
+      const urlParams = new URL(window.location.href);
+      urlParams.searchParams.set("page", page);
+      window.location.href = urlParams;
+    },
     filter() {
-      const myUrlWithParams = new URL(process.env.VUE_APP_FRONT_URL);
-      if (this.commander)
-        myUrlWithParams.searchParams.append("commander", this.commander);
+      const myUrlWithParams = new URL(window.location.href.split("?")[0]);
 
       if (this.location)
         myUrlWithParams.searchParams.append("location", this.location);
@@ -193,6 +191,39 @@ export default {
       window.location.href = myUrlWithParams;
     },
   },
+  computed: {
+    pageOptions() {
+      const options = [];
+
+      if (this.$store.state.top4.numberOfPages <= 5) {
+        for (let i = 1; i <= this.$store.state.top4.numberOfPages; i++) {
+          options.push(i);
+        }
+      } else if (this.page <= 3) {
+        for (let i = 1; i <= 5; i++) {
+          options.push(i);
+        }
+      } else if (this.page >= this.$store.state.top4.numberOfPages - 2) {
+        for (
+          let i = this.$store.state.top4.numberOfPages - 4;
+          i <= this.$store.state.top4.numberOfPages;
+          i++
+        ) {
+          options.push(i);
+        }
+      } else {
+        for (
+          let i = this.page - 2;
+          i <= this.page + 2 && options.length < 5;
+          i++
+        ) {
+          options.push(i);
+        }
+      }
+
+      return options;
+    },
+  },
 };
 </script>
 
@@ -202,13 +233,13 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin:12;
+  margin: 12;
   max-width: 100%;
 }
 button {
   width: 100%;
 }
-.row{
+.row {
   max-width: 100%;
 }
 </style>
